@@ -5,3 +5,4 @@ public/storage
 .env
 config/
 .idea/
+.git/
