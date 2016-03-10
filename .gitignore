@@ -1,0 +1,7 @@
+# se agregan los archivos que no serán rastreados por git
+vendor/
+node_modules/
+public/storage
+.env
+config/
+.idea/
