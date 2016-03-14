@@ -6,3 +6,4 @@ public/storage
 config/
 .idea/
 .git/
+_ide_helper.php

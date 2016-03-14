@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('main');
 });
 
+Route::get('login', 'LoginController@index');
+Route::post('login', 'LoginController@login');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes

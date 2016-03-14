@@ -52,5 +52,6 @@ elixir(function(mix) {
 			],
 			'public/css/base-styles.css',
 			'resources/assets'
-		);
+		)
+		.copy('resources/assets/components/library/icons/fontawesome/assets/fonts', 'public/fonts');
 });
