@@ -11,13 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('main');
-});
-
-Route::get('login', 'LoginController@index');
-Route::post('login', 'LoginController@login');
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -30,5 +23,15 @@ Route::post('login', 'LoginController@login');
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
+    // rutas de logueo
+    Route::get('login', 'LoginController@index');
+    Route::post('login', 'LoginController@login');
+    Route::get('logout', 'LoginController@logout');
+
+    // ruta principal
+    Route::group(['middleware' => ['autenticacion']], function() {
+        Route::get('/', function () {
+            return view('main');
+        });
+    });
 });

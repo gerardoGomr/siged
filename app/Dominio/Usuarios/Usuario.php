@@ -5,7 +5,7 @@ use Siged\Dominio\Personas\Persona;
 /**
  * @author Gerardo Adrián Gómez Ruiz
  */
-abstract class Usuario extends Persona
+class Usuario extends Persona
 {
     /**
      * @var int
@@ -52,11 +52,16 @@ abstract class Usuario extends Persona
      * Usuario constructor.
      * @param string $username
      * @param string $contrasenia
+     * @param string $nombre
+     * @param string $paterno
+     * @param string $materno
      */
-    public function __construct($username = '', $contrasenia = '')
+    public function __construct($username = '', $contrasenia = '', $nombre = '', $paterno = '', $materno = '')
     {
         $this->username    = $username;
         $this->contrasenia = $contrasenia;
+
+        parent::__construct($nombre, $paterno, $materno);
     }
 
     /**
@@ -100,9 +105,9 @@ abstract class Usuario extends Persona
      *
      * @return string
      */
-    public function getPasswd()
+    public function getContrasenia()
     {
-        return $this->passwd;
+        return $this->contrasenia;
     }
 
     /**
@@ -110,9 +115,57 @@ abstract class Usuario extends Persona
      *
      * @param string $contrasenia the passwd
      */
-    public function setPasswd($contrasenia)
+    public function setContrasenia($contrasenia)
     {
         $this->contrasenia = $contrasenia;
+    }
+
+    /**
+     * @return Area
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
+
+    /**
+     * @param Area $area
+     */
+    public function setArea($area)
+    {
+        $this->area = $area;
+    }
+
+    /**
+     * @return Puesto
+     */
+    public function getPuesto()
+    {
+        return $this->puesto;
+    }
+
+    /**
+     * @param Puesto $puesto
+     */
+    public function setPuesto($puesto)
+    {
+        $this->puesto = $puesto;
+    }
+
+    /**
+     * @return Fotografia
+     */
+    public function getFotografia()
+    {
+        return $this->fotografia;
+    }
+
+    /**
+     * @param Fotografia $fotografia
+     */
+    public function setFotografia($fotografia)
+    {
+        $this->fotografia = $fotografia;
     }
 
     /**

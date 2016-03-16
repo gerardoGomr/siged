@@ -15,7 +15,7 @@
 				<span class="text-primary center">Escriba su nombre de usuario y contraseña para ingresar al sistema.</span>
 				<div class="separator"></div>
 				<form role="form" action="{{ url('login') }}" method="post" name="formLogin">
-					{!! csrf_field() !!}
+					{{ csrf_field() }}
 					<div class="form-group">
 				    	<input type="text" class="form-control" name="txtUsername" id="txtUsername" placeholder="Usuario">
 				 	</div>

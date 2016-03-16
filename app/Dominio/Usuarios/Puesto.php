@@ -1,5 +1,5 @@
 <?php
-namespace Sise\Dominio\Usuarios;
+namespace Siged\Dominio\Usuarios;
 
 /**
 * @author Gerardo Adrián Gómez Ruiz

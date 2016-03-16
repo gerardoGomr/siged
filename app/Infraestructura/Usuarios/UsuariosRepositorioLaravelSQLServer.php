@@ -2,8 +2,12 @@
 namespace Siged\Infraestructura\Usuarios;
 
 use DB;
-use Illuminate\Support\Collection;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Siged\Dominio\Usuarios\Usuario;
+use Siged\Dominio\Usuarios\Area;
+use Siged\Dominio\Usuarios\Puesto;
+use Siged\Servicios\PDOLogger;
 
 /**
  * Class UsuariosRepositorioInterface
@@ -20,28 +24,28 @@ class UsuariosRepositorioLaravelSQLServer implements UsuariosRepositorioInterfac
     public function obtenerUsuarioPorUsername($username)
     {
         try {
-            $usuario = DB::connection('Integral')
-                ->table('tUsuarios')
-                ->join('c_Areas', 'c_Areas.idDireccion', '=', 'tUsuarios.departamento')
-                ->where('tUsuarios.usuario', $username)
+            $usuarios = DB::table('usuario')
+                ->join('area_laboral', 'area_laboral.id', '=', 'usuario.area_laboral_id')
+                ->join('puesto', 'puesto.id', '=', 'usuario.puesto_id')
+                ->where('usuario.username', $username)
                 ->first();
 
-            $totalUsuarios = count($usuario);
+            $totalUsuarios = count($usuarios);
 
             if ($totalUsuarios > 0) {
-                $trabajador = new Trabajador($usuario->nombre);
-                $trabajador->setUsuario(new UsuarioSise());
-                $trabajador->getUsuario()->setUsername($usuario->usuario);
-                $trabajador->getUsuario()->setId((int)$usuario->id);
-                $trabajador->setArea(new Area((int)$usuario->idDireccion, $usuario->Direccion));
+                $usuario = new Usuario($usuarios->username, $usuarios->passwd, $usuarios->nombre, $usuarios->paterno, $usuarios->materno);
+                $usuario->setArea(new Area($usuarios->area_laboral_id, $usuarios->nombre));
+                $usuario->setPuesto(new Puesto($usuarios->puesto_id, $usuarios->puesto));
+                $usuario->setActivo($usuarios->activo);
 
-                return $trabajador;
+                return $usuario;
             }
 
             return null;
 
         } catch (\PDOException $e) {
-            echo $e->getMessage();
+            $pdoLogger = new PDOLogger(new Logger('pdo_exception'), new StreamHandler(storage_path() . '/logs/pdo/sqlsrv_' . date('Y-m-d') . '.log', Logger::ERROR));
+            $pdoLogger->log($e);
             return null;
         }
     }

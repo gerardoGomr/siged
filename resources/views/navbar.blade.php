@@ -23,7 +23,7 @@
 				<span class="media margin-none">
 					<span class="pull-left"></span>
 					<span class="media-body">
-						<span class="strong"><i class="fa fa-user"></i> Usuario de Prueba</span><span class="caret"></span>
+						<span class="strong"><i class="fa fa-user"></i> {{ request()->session()->get('usuario')->getNombreCompleto() }}</span><span class="caret"></span>
 					</span>
 				</span>
 			</a>
