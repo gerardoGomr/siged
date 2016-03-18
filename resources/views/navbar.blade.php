@@ -1,5 +1,5 @@
 <!-- NAVBAR -->
-<div class="navbar hidden-print box main navbar-primary" role="navigation" >
+<div class="navbar hidden-print box main" role="navigation" style="background: url('public/img/fondo.png') repeat-x">
 	<div class="user-action user-action-btn-navbar pull-left border-right">
 		<button class="btn btn-sm btn-navbar btn-primary btn-stroke"><i class="fa fa-bars fa-2x"></i></button>
 	</div>
