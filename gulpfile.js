@@ -31,7 +31,13 @@ elixir(function(mix) {
 				'components/core/js/sidebar.collapse.init.js',
 				'components/core/js/sidebar.kis.init.js',
 				'components/core/js/core.init.js',
-				'components/core/js/animations.init.js'
+				'components/core/js/animations.init.js',
+				'components/common/forms/validator/assets/lib/jquery-validation/dist/jquery.validate.min.js',
+				'components/common/forms/validator/assets/lib/jquery-validation/dist/additional-methods.min.js',
+				'components/common/forms/validator/assets/lib/jquery-validation/dist/jquery.form.js',
+				'components/common/forms/validator/assets/lib/jquery-validation/dist/validaciones.js',
+				'components/common/forms/elements/bootstrap-datepicker/assets/lib/js/bootstrap-datepicker.js',
+				'components/common/forms/elements/bootstrap-datepicker/assets/lib/js/locales/bootstrap-datepicker.es.js',
 			],
 			'public/js/base-scripts.js',
 			'resources/assets'
@@ -48,10 +54,16 @@ elixir(function(mix) {
 				'components/modules/admin/notifications/notyfy/assets/lib/css/notyfy.theme.default.css',
 				'components/modules/admin/page-tour/assets/css/pageguide.css',
 				'components/plugins/prettyprint/assets/css/prettify.css',
-				'components/library/animate/animate.min.css'
+				'components/library/animate/animate.min.css',
+				'components/common/forms/elements/bootstrap-datepicker/assets/lib/css/bootstrap-datepicker.css',
 			],
 			'public/css/base-styles.css',
 			'resources/assets'
 		)
-		.copy('resources/assets/components/library/icons/fontawesome/assets/fonts', 'public/fonts');
+		.copy([
+			'resources/assets/components/library/icons/fontawesome/assets/fonts',
+			'resources/assets/components/library/icons/glyphicons/assets/fonts'
+			],
+			'public/fonts'
+		);
 });

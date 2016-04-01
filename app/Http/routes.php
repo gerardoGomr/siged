@@ -33,5 +33,9 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('/', function () {
             return view('main');
         });
+
+        // registrar la llegada de un oficio externo
+        Route::get('registrar', 'Documentos\DocumentosController@index');
+        Route::post('registrar', 'Documentos\DocumentosController@registrar');
     });
 });
