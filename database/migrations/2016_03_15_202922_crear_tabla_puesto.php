@@ -27,6 +27,6 @@ class CrearTablaPuesto extends Migration
      */
     public function down()
     {
-        Schema::drop('puesto');
+        //Schema::drop('puesto');
     }
 }

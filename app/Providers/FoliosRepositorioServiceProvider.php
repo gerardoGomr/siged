@@ -3,6 +3,7 @@
 namespace Siged\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Siged\Infraestructura\Documentos\DAO\FoliosDAO;
 use Siged\Infraestructura\Documentos\FoliosSQLServerRepositorio;
 
 class FoliosRepositorioServiceProvider extends ServiceProvider
@@ -25,7 +26,7 @@ class FoliosRepositorioServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('Siged\Infraestructura\Documentos\Contratos\FoliosRepositorioInterface', function() {
-             return new FoliosSQLServerRepositorio();
+             return new FoliosSQLServerRepositorio(new FoliosDAO());
         });
     }
 }

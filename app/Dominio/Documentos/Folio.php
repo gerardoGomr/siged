@@ -18,21 +18,37 @@ class Folio
      */
     private $documento;
 
-    public function __construct($numero)
+    /**
+     * Folio constructor.
+     * @param int $numero
+     * @param string $documento
+     */
+    public function __construct($numero, $documento)
     {
-        $this->numero = $numero;
+        $this->numero    = $numero;
+        $this->documento = $documento;
     }
 
+    /**
+     * sumar numero mas uno
+     * @return void
+     */
     public function actualizar()
     {
         $this->numero ++;
     }
 
+    /**
+     * @return int
+     */
     public function numero()
     {
         return $this->numero;
     }
 
+    /**
+     * @return string
+     */
     public function documento()
     {
         return $this->documento;

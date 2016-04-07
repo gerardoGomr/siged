@@ -40,6 +40,6 @@ class CrearTablaUsuario extends Migration
      */
     public function down()
     {
-        Schema::drop('usuario');
+        //Schema::drop('usuario');
     }
 }

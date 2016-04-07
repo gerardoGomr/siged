@@ -27,6 +27,6 @@ class CrearTablaArea extends Migration
      */
     public function down()
     {
-        Schema::drop('area_laboral');
+        //Schema::drop('area_laboral');
     }
 }

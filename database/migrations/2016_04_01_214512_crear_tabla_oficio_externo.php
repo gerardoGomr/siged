@@ -17,6 +17,7 @@ class CrearTablaOficioExterno extends Migration
             $tabla->date('fecha');
             $tabla->string('numero');
             $tabla->string('remitente');
+            $tabla->string('cargo');
             $tabla->string('asunto');
             $tabla->string('destinatario');
             $tabla->dateTime('fecha_creado')->nullable();
@@ -31,6 +32,6 @@ class CrearTablaOficioExterno extends Migration
      */
     public function down()
     {
-
+        //Schema::drop('oficio_externo');
     }
 }

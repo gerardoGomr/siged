@@ -16,7 +16,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3">Fecha:</label>
                                                     <div class="col-md-3">
-                                                        <input name="fecha" id="fecha" type="text" class="form-control required" readonly="readonly">
+                                                        <input name="fecha" id="fecha" type="text" class="form-control required" value="{{ date('d/m/Y') }}" readonly="readonly">
                                                     </div>
                                                 </div>
 
@@ -29,8 +29,12 @@
 
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3">Remitente:</label>
-                                                    <div class="col-md-9">
-                                                        <input name="remitente" id="remitente" type="text" class="form-control required">
+                                                    <div class="col-md-5">
+                                                        <input name="remitente" id="remitente" type="text" class="form-control required" placeholder="Nombre">
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <input name="cargo" id="cargo" type="text" class="form-control required" placeholder="Cargo">
                                                     </div>
                                                 </div>
 

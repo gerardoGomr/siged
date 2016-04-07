@@ -20,6 +20,13 @@ class OficiosExtenosUploader
         $this->ruta = storage_path('app/documentos/direccion_general/oficios_recibidos/');
     }
 
+    /**
+     * guardar un oficio externo registrado en un directorio del sistema
+     * especificado por la ruta
+     * @param string $rutaTemporal
+     * @param OficioExterno $oficio
+     * @throws \FileException
+     */
     public function subir($rutaTemporal, OficioExterno $oficio)
     {
         // preparar para guardar en directorio

@@ -27,6 +27,7 @@ class RegistrarOficioRequest extends Request
             'fecha'     => 'required|date_format:d/m/Y',
             'numero'    => 'required',
             'remitente' => 'required',
+            'cargo'     => 'required',
             'asunto'    => 'required',
             'oficio'    => 'required|mimes:pdf'
         ];

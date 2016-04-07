@@ -1,5 +1,7 @@
 <?php
 namespace Siged\Dominio\Documentos;
+use Siged\Servicios\Contratos\Momento;
+use Siged\Servicios\Documentos\OficiosExternosMomento;
 
 /**
  * Class OficioExterno
@@ -24,7 +26,7 @@ class OficioExterno
     private $folioEntrada;
 
     /**
-     * @var string
+     * @var Remitente
      */
     private $remitente;
 
@@ -39,11 +41,13 @@ class OficioExterno
     private $destinatario;
 
     /**
-     * @var string
+     * OficioExterno constructor.
+     * @param string $fecha
+     * @param string $numero
+     * @param Remitente $remitente
+     * @param string $asunto
      */
-    private $rutaEscaneado;
-
-    public function __construct($fecha, $numero, $remitente, $asunto)
+    public function __construct($fecha, $numero, Remitente $remitente, $asunto)
     {
         $this->fecha        = $fecha;
         $this->numero       = $numero;
@@ -52,7 +56,11 @@ class OficioExterno
         $this->destinatario = 'Dr. Moisés Grajales';
     }
 
-    public function generarFolio(Folio $folio)
+    /**
+     * registrar un nuevo folio mediante un número de asignación
+     * @param Folio $folio
+     */
+    public function registrar(Folio $folio)
     {
         $numero       = '';
         $longitud     = strlen((string)$folio->numero());
@@ -66,21 +74,39 @@ class OficioExterno
 
         $this->folioEntrada = 'CECCC/DG/PAPELETA/' . $numero . '/' . date('Y');
 
+        // actualizar en 1 el folio que se ocupó
         $folio->actualizar();
     }
 
-    public function guardarEscaneado($rutaTemporal)
-    {
-
-    }
-
+    /**
+     * formatear el folio de entrada por el caracter que se especifica
+     * @param string $caracter
+     * @return string
+     */
     public function formatearFolio($caracter)
     {
         return str_replace('/', $caracter, $this->folioEntrada);
     }
 
-    public function folioEntrada()
+    /**
+     * capturar un memento del oficio
+     * @return OficiosExternosMomento
+     */
+    public function capturarMomento()
     {
-        return $this->folioEntrada;
+        return new OficiosExternosMomento($this->fecha, $this->numero, $this->remitente, $this->asunto, $this->destinatario);
+    }
+
+    /**
+     * regenerar un oficio a partir de un memento determinado
+     * @param Momento $momento
+     */
+    public function regenerarDeMomento(Momento $momento)
+    {
+        $this->fecha        = $momento->fecha;
+        $this->numero       = $momento->numero;
+        $this->remitente    = $momento->remitente;
+        $this->asunto       = $momento->asunto;
+        $this->destinatario = $momento->destinatario;
     }
 }
