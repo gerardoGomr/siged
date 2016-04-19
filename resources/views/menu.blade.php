@@ -22,7 +22,7 @@
 							</div>
 						</div>
 						<div class="innerAll">
-							<h4 class="text-white margin-none"><i class="fa text-small fa-circle text-success pull-right"></i> {{ request()->session()->get('usuario')->getNombreCompleto() }}</h4>
+							<h4 class="text-white margin-none"><i class="fa text-small fa-circle text-success pull-right"></i> {{ request()->session()->get('usuario')->nombreCompleto() }}</h4>
 							<p class="margin-none text-muted text-small">Director</p>
 						</div>
 					</div>
@@ -33,6 +33,10 @@
 			</li>
 			<li>
 				<a href="{{ url('redactar') }}" class="glyphicons circle_plus"><i></i><span>Redactar documento</span></a>
+			</li>
+
+			<li>
+				<a href="{{ url('oficios-recibidos') }}" class="glyphicons file_import"><i></i><span>Oficios recibidos</span></a>
 			</li>
 		</ul>
 	</div>

@@ -35,7 +35,12 @@ Route::group(['middleware' => ['web']], function () {
         });
 
         // registrar la llegada de un oficio externo
-        Route::get('registrar', 'Documentos\DocumentosController@index');
+        Route::get('registrar', 'Documentos\DocumentosController@capturar');
         Route::post('registrar', 'Documentos\DocumentosController@registrar');
+
+        // ver oficios
+        Route::get('oficios-recibidos', 'Documentos\DocumentosController@index');
+        // turnar oficios
+        Route::post('oficios-recibidos/turnar', 'Documentos\DocumentosController@turnar');
     });
 });

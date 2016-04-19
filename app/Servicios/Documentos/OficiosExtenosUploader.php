@@ -17,7 +17,7 @@ class OficiosExtenosUploader
      */
     public function __construct()
     {
-        $this->ruta = storage_path('app/documentos/direccion_general/oficios_recibidos/');
+        $this->ruta = 'storage/app/documentos/direccion_general/oficios_recibidos/';
     }
 
     /**
@@ -36,5 +36,27 @@ class OficiosExtenosUploader
         if (!move_uploaded_file($rutaTemporal, $this->ruta . $folio . '.pdf')) {
             throw new \FileException('No se pudo mover el archivo al directorio especificado');
         }
+    }
+
+    public function asignarEscaneado(OficioExterno $oficio)
+    {
+        if (!file_exists($this->rutaBase)) {
+            return null;
+        }
+
+        $archivos = scandir($this->rutaBase);
+
+        if($archivos === false) {
+            return null;
+        }
+    }
+
+    /**
+     * devolver la ruta
+     * @return string
+     */
+    public function ruta()
+    {
+        return $this->ruta;
     }
 }

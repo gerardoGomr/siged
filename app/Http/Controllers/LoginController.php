@@ -1,10 +1,15 @@
 <?php
 namespace Siged\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Siged\Http\Requests;
-use Siged\Infraestructura\Usuarios\UsuariosRepositorioInterface;
+use Illuminate\Http\Request,
+    Siged\Http\Requests,
+    Siged\Infraestructura\Usuarios\UsuariosRepositorioInterface;
 
+/**
+ * Class LoginController
+ * @package Siged\Http\Controllers
+ * @author Gerardo Adrián Gómez Ruiz
+ */
 class LoginController extends Controller
 {
     /**

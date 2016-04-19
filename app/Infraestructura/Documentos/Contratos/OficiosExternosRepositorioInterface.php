@@ -3,7 +3,6 @@ namespace Siged\Infraestructura\Documentos\Contratos;
 
 use Siged\Dominio\Documentos\OficioExterno;
 use Siged\Infraestructura\Contratos\RepositorioInterface;
-use Siged\Servicios\Contratos\Momento;
 
 /**
  * Interface OficiosExternosRepositorioInterface
@@ -14,8 +13,15 @@ interface OficiosExternosRepositorioInterface extends RepositorioInterface
 {
     /**
      * guardar
-     * @param Momento $oficio
-     * @return mixed
+     * @param OficioExterno|Momento $oficio
+     * @return bool
      */
-    public function guardar(Momento $oficio);
+    public function guardar(OficioExterno $oficio);
+
+    /**
+     * guardar los cambios de la asignacion de oficios
+     * @param OficioExterno $oficio
+     * @return bool
+     */
+    public function guardarAsignacion(OficioExterno $oficio);
 }

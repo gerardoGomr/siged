@@ -1,7 +1,7 @@
 <?php
 namespace Siged\Dominio\Documentos;
-use Siged\Servicios\Contratos\Momento;
-use Siged\Servicios\Documentos\OficiosExternosMomento;
+
+use Siged\Dominio\Gettable;
 
 /**
  * Class OficioExterno
@@ -10,6 +10,13 @@ use Siged\Servicios\Documentos\OficiosExternosMomento;
  */
 class OficioExterno
 {
+    use Gettable;
+
+    /**
+     * @var int
+     */
+    private $id;
+
     /**
      * @var string
      */
@@ -41,26 +48,69 @@ class OficioExterno
     private $destinatario;
 
     /**
+     * @var Asignacion
+     */
+    private $asignacion;
+
+    /**
+     * @var OficioExternoEstatus
+     */
+    private $estatus;
+
+    /**
      * OficioExterno constructor.
      * @param string $fecha
      * @param string $numero
      * @param Remitente $remitente
      * @param string $asunto
+     * @param string $destinatario
+     * @param int|null $id
+     * @param string|null $folio
      */
-    public function __construct($fecha, $numero, Remitente $remitente, $asunto)
+    private function __construct($fecha, $numero, Remitente $remitente, $asunto, $destinatario = 'Dr. Moisés Grajales', $id = null, $folio = null)
     {
         $this->fecha        = $fecha;
         $this->numero       = $numero;
         $this->remitente    = $remitente;
         $this->asunto       = $asunto;
-        $this->destinatario = 'Dr. Moisés Grajales';
+        $this->destinatario = $destinatario;
+        $this->id           = $id;
+        $this->folioEntrada = $folio;
+    }
+
+    /**
+     * registro de oficio capturado
+     * @param string $fecha
+     * @param string $numero
+     * @param Remitente $remitente
+     * @param string $asunto
+     * @return OficioExterno
+     */
+    public static function registrar($fecha, $numero, Remitente $remitente, $asunto)
+    {
+        return new self($fecha, $numero, $remitente, $asunto);
+    }
+
+    /**
+     * @param $fecha
+     * @param $numero
+     * @param Remitente $remitente
+     * @param $asunto
+     * @param $destinatario
+     * @param $id
+     * @param $folio
+     * @return OficioExterno
+     */
+    public static function cargar($fecha, $numero, Remitente $remitente, $asunto, $destinatario, $id, $folio)
+    {
+        return new self($fecha, $numero, $remitente, $asunto, $destinatario, $id, $folio);
     }
 
     /**
      * registrar un nuevo folio mediante un número de asignación
      * @param Folio $folio
      */
-    public function registrar(Folio $folio)
+    public function generar(Folio $folio)
     {
         $numero       = '';
         $longitud     = strlen((string)$folio->numero());
@@ -89,24 +139,12 @@ class OficioExterno
     }
 
     /**
-     * capturar un memento del oficio
-     * @return OficiosExternosMomento
+     * turnar oficio
+     * @param Asignacion $asignacion
      */
-    public function capturarMomento()
+    public function turnar(Asignacion $asignacion)
     {
-        return new OficiosExternosMomento($this->fecha, $this->numero, $this->remitente, $this->asunto, $this->destinatario);
-    }
-
-    /**
-     * regenerar un oficio a partir de un memento determinado
-     * @param Momento $momento
-     */
-    public function regenerarDeMomento(Momento $momento)
-    {
-        $this->fecha        = $momento->fecha;
-        $this->numero       = $momento->numero;
-        $this->remitente    = $momento->remitente;
-        $this->asunto       = $momento->asunto;
-        $this->destinatario = $momento->destinatario;
+        $this->asignacion = $asignacion;
+        $this->estatus    = OficioExternoEstatus::turnado();
     }
 }

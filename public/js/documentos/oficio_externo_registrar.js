@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
             }
 
             bootbox.alert('Oficio registrado con éxito', function() {
-
+                window.location.href = '/';
             });
         },
         error:   function(XMLHttpRequest, textStatus, errorThrown){

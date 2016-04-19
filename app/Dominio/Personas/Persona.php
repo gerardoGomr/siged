@@ -123,7 +123,7 @@ abstract class Persona
      * obtener el nombre completo del funcionario
      * @return string
      */
-    abstract public function getNombreCompleto();
+    abstract public function nombreCompleto();
 
     /**
      * Gets the el sexo de la persona.

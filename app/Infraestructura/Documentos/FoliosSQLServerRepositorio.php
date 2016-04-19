@@ -1,9 +1,13 @@
 <?php
 namespace Siged\Infraestructura\Documentos;
 
-use Siged\Dominio\Documentos\Folio;
-use Siged\Infraestructura\Documentos\Contratos\FoliosRepositorioInterface;
-use Siged\Infraestructura\Documentos\DAO\FoliosDAO;
+use Carbon\Carbon,
+    DB,
+    Siged\Dominio\Documentos\Folio,
+    Siged\Infraestructura\Documentos\Contratos\FoliosRepositorioInterface,
+    Monolog\Handler\StreamHandler,
+    Monolog\Logger,
+    Siged\Servicios\PDOLogger;
 
 /**
  * Class FoliosSQLServerRepositorio
@@ -12,20 +16,6 @@ use Siged\Infraestructura\Documentos\DAO\FoliosDAO;
  */
 class FoliosSQLServerRepositorio implements FoliosRepositorioInterface
 {
-    /**
-     * @var FoliosDAO
-     */
-    private $foliosDAO;
-
-    /**
-     * FoliosSQLServerRepositorio constructor.
-     * @param FoliosDAO $foliosDAO
-     */
-    public function __construct(FoliosDAO $foliosDAO)
-    {
-        $this->foliosDAO = $foliosDAO;
-    }
-
     /**
      * @return Collection
      */
@@ -51,11 +41,17 @@ class FoliosSQLServerRepositorio implements FoliosRepositorioInterface
     public function obtenerFolioPorNombre($nombre)
     {
         // query
-        $this->foliosDAO = FoliosDAO::where('documento', $nombre)->first();
-        // instanciar objeto de dominio
-        $folio  = new Folio($this->foliosDAO->numero, $this->foliosDAO->documento);
-        // retornar objeto
-        return $folio;
+        try {
+            $folios = DB::table('folio')->where('documento', $nombre)->first();
+            // instanciar objeto de dominio
+            $folio  = new Folio($folios->numero, $folios->documento);
+            // retornar objeto
+            return $folio;
+        } catch (\PDOException $e) {
+            $pdoLogger = new PDOLogger(new Logger('pdo_exception'), new StreamHandler(storage_path() . '/logs/pdo/sqlsrv_' . date('Y-m-d') . '.log', Logger::ERROR));
+            $pdoLogger->log($e);
+            return null;
+        }
     }
 
     /**
@@ -66,11 +62,19 @@ class FoliosSQLServerRepositorio implements FoliosRepositorioInterface
     public function actualizar(Folio $folio)
     {
         // TODO: Implement actualizar() method.
-        $this->foliosDAO->numero           = $folio->numero();
-        $this->foliosDAO->documento        = $folio->documento();
-        $this->foliosDAO->fecha_modificado = \Carbon\Carbon::createFromDate(date('Y'), date('m'), date('d'));
-        $this->foliosDAO->save();
+        try {
+            DB::table('folio')
+                ->where('documento', $folio->documento())
+                ->update([
+                    'numero'           => $folio->numero(),
+                    'fecha_modificado' => Carbon::createFromDate(date('Y'), date('m'), date('d'))
+                ]);
 
-        return true;
+            return true;
+        } catch (\PDOException $e) {
+            $pdoLogger = new PDOLogger(new Logger('pdo_exception'), new StreamHandler(storage_path() . '/logs/pdo/sqlsrv_' . date('Y-m-d') . '.log', Logger::ERROR));
+            $pdoLogger->log($e);
+            return false;
+        }
     }
 }

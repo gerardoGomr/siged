@@ -71,7 +71,7 @@ class Trabajador extends Persona
      * obtener el nombre completo del funcionario
      * @return string
      */
-    public function getNombreCompleto()
+    public function nombreCompleto()
     {
         $nombreCompleto = $this->nombre;
 
@@ -196,7 +196,7 @@ class Trabajador extends Persona
      */
     public function verificarContrasenia($passwd)
     {
-    	return $this->usuario->verificarContrasenia($passwd);
+    	//return $this->usuario->verificarContrasenia($passwd);
     }
 
     /**

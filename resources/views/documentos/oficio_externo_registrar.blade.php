@@ -71,5 +71,5 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('public/js/documentos_registrar.js') }}"></script>
+    <script src="{{ asset('public/js/documentos/oficio_externo_registrar.js') }}"></script>
 @stop

@@ -19,33 +19,7 @@
                                 <div class="col-table-row">
                                     <div class="col-app col-unscrollable">
                                         <div class="col-app">
-                                            <div class="list-group email-item-list">
-                                                <a href="#" class="list-group-item">
-                                                    <span class="innerTB display-block">
-                                                        <span class="media">
-                                                            <span class="pull-left text-center innerLR innerT display-block half"><i class="fa fa-fw fa-heart text-muted"></i></span>
-                                                            <span class="media-body display-block innerR">
-                                                                <span class="media display-block innerB">
-                                                                    <img src="{{ url('resources/assets/images/people/80/1.jpg') }}" alt="" width="40" class="pull-left" />
-                                                                    <span class="media-body display-block">
 
-                                                                        <small class="text-muted pull-right">30 Oct</small>
-
-                                                                        <h5 class="text-muted-dark text-weight-normal">Perpetua Inger</h5>
-                                                                        <h4>You Won't Believe This ..</h4>
-
-                                                                        <!-- <i class="fa fa-flag text-primary"></i> -->
-                                                                    </span>
-                                                                    <span class="clearfix"></span>
-                                                                </span>
-
-                                                                <p class="margin-none text-larger text-muted-darker">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, libero</p>
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <!-- // END list-group -->
                                         </div>
                                         <!-- // END col-app -->
                                     </div>

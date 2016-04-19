@@ -1,12 +1,13 @@
 <?php
 namespace Siged\Infraestructura\Usuarios;
+use Siged\Infraestructura\Contratos\RepositorioInterface;
 
 /**
  * Interface UsuariosRepositorioInterface
  * @package Siged\Infraestructura\Usuarios
  * @author  Gerardo Adrián Gómez Ruiz
  */
-interface UsuariosRepositorioInterface
+interface UsuariosRepositorioInterface extends RepositorioInterface
 {
     /**
      * obtener usuario

@@ -1,14 +1,19 @@
 <?php
 namespace Siged\Http\Controllers\Documentos;
 
-use Siged\Dominio\Documentos\OficioExterno;
-use Siged\Dominio\Documentos\Remitente;
-use Siged\Http\Requests;
-use Siged\Http\Controllers\Controller;
-use Siged\Http\Requests\RegistrarOficioRequest;
-use Siged\Infraestructura\Documentos\Contratos\FoliosRepositorioInterface;
-use Siged\Infraestructura\Documentos\Contratos\OficiosExternosRepositorioInterface;
-use Siged\Servicios\Documentos\OficiosExtenosUploader;
+use Siged\Dominio\Documentos\Asignacion,
+    Siged\Dominio\Documentos\OficioExterno,
+    Siged\Dominio\Documentos\Remitente,
+    Siged\Http\Requests,
+    Siged\Http\Controllers\Controller,
+    Siged\Http\Requests\RegistrarOficioRequest,
+    Siged\Http\Requests\TurnarOficioRequest,
+    Siged\Infraestructura\Documentos\Contratos\FoliosRepositorioInterface,
+    Siged\Infraestructura\Documentos\Contratos\OficiosExternosRepositorioInterface,
+    Siged\Infraestructura\Usuarios\UsuariosRepositorioInterface,
+    Siged\Servicios\Documentos\Factories\PrioridadesAsignacionFactory,
+    Siged\Servicios\Documentos\OficiosExtenosUploader,
+    Siged\Servicios\Coleccion;
 
 class DocumentosController extends Controller
 {
@@ -38,9 +43,9 @@ class DocumentosController extends Controller
      * mostrar vista
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function capturar()
     {
-        return view('documentos.documentos_registrar');
+        return view('documentos.oficio_externo_registrar');
     }
 
     /**
@@ -50,21 +55,19 @@ class DocumentosController extends Controller
      */
     public function registrar(RegistrarOficioRequest $request)
     {
-        $oficio = new OficioExterno($request->get('fecha'), $request->get('numero'), new Remitente($request->get('remitente'), $request->get('cargo')), $request->get('asunto'));
+        $oficio = OficioExterno::registrar($request->get('fecha'), $request->get('numero'), new Remitente($request->get('remitente'), $request->get('cargo')), $request->get('asunto'));
         $folio  = $this->foliosRepositorio->obtenerFolioPorNombre('Papeleta');
-        $oficio->registrar($folio);
+        $oficio->generar($folio);
         $oficiosUploader = new OficiosExtenosUploader();
         try {
-            $ruta = $request->file('oficio')->getPathname();
-            $oficiosUploader->subir($ruta, $oficio);
-
             // guardar los cambios de numero
             $this->foliosRepositorio->actualizar($folio);
 
             // persistir el oficio
-            // obtener momento
-            $momento = $oficio->capturarMomento();
-            $this->oficiosExternosRepositorio->guardar($momento);
+            $this->oficiosExternosRepositorio->guardar($oficio);
+
+            $ruta = $request->file('oficio')->getPathname();
+            $oficiosUploader->subir($ruta, $oficio);
 
             return response()->json([
                'respuesta' => 'success'
@@ -75,5 +78,46 @@ class DocumentosController extends Controller
                 'respuesta' => 'fail'
             ]);
         }
+    }
+
+    /**
+     * @param UsuariosRepositorioInterface $usuariosRepositorio
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index(UsuariosRepositorioInterface $usuariosRepositorio)
+    {
+        $listaOficios    = $this->oficiosExternosRepositorio->obtenerTodos();
+        $oficiosUploader = new OficiosExtenosUploader();
+        $listaUsuarios   = $usuariosRepositorio->obtenerTodos();
+        return view('documentos.oficios_externos', compact('listaOficios', 'oficiosUploader', 'listaUsuarios'));
+    }
+
+    /**
+     * @param TurnarOficioRequest $request
+     * @param UsuariosRepositorioInterface $usuariosRepositorio
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function turnar(TurnarOficioRequest $request, UsuariosRepositorioInterface $usuariosRepositorio)
+    {
+        $oficio = $this->oficiosExternosRepositorio->obtenerPorId((int)base64_decode($request->get('idOficio')));
+
+        // se obtienen los id's
+        $usuariosPost = $request->get('usuario');
+        $usuarios = new Coleccion();
+        foreach ($usuariosPost as $idUsuario) {
+            $usuario = $usuariosRepositorio->obtenerPorId($idUsuario);
+            $usuarios->attach($usuario);
+        }
+
+        $oficio->turnar(new Asignacion($request->get('instruccion'), PrioridadesAsignacionFactory::crear($request->get('prioridad')), $usuarios));
+
+        $respuesta              = [];
+        $respuesta['resultado'] = 'ok';
+        // persistir cambios
+        if (!($this->oficiosExternosRepositorio->guardarAsignacion($oficio))) {
+            $respuesta['resultado'] = 'error';
+        }
+
+        return response()->json($respuesta);
     }
 }
