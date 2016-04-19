@@ -91,7 +91,7 @@ class OficiosExternosSQLServerRepositorio implements OficiosExternosRepositorioI
                     'asunto'       => $oficio->asunto,
                     'destinatario' => $oficio->destinatario,
                     'folio'        => $oficio->folioEntrada,
-                    'fecha_creado' => Carbon::createFromDate(date('Y'), date('m'), date('d'))
+                    'fecha_creado' => date('d/m/Y H:m:i')
                 ]);
 
             return true;
